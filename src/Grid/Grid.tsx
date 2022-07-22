@@ -1,5 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import Cell from './Cell/Cell';
+import './Grid.css'
 import { AStar } from '../SearchAlgorithms/aStar';
 import { dijkstra } from '../SearchAlgorithms/djkstra';
 import { dfs } from '../SearchAlgorithms/dfs';
@@ -39,8 +40,8 @@ const Grid: FC = () => {
     const [startCellCol, setStartCellCol] = useState(5);
     const [endCellCol, setEndCellCol] = useState(15);
     const [isDesktopView, setIsDesktopView] = useState(true);
-    const ROW_COUNT = 25;
-    const COL_COUNT = 25;
+    const ROW_COUNT = 20;
+    const COL_COUNT = 30;
     const MOBILE_ROW_COUNT = 10;
     const MOBILE_COL_COUNT = 20;
 
@@ -48,10 +49,6 @@ const Grid: FC = () => {
         const startGrid = initGrid();
         setGrid(startGrid);
     }, [])
-
-    const toggleIsRunning = () => {
-        setIsRunning(!isRunning);
-    }
 
     // Grid Setup
 
@@ -131,7 +128,7 @@ const Grid: FC = () => {
                     document.getElementById(`cell-${row}-${col}`)?.className === 'cell cell-end'
                 ) {
                     setMouseDown(true);
-                    setIsStartCell(true);
+                    setIsEndCell(true);
                     setCurrRow(row);
                     setCurrCol(col);
                 } else {
@@ -268,6 +265,7 @@ const Grid: FC = () => {
 
     //  Removes all color/animation from grid
     const clearGrid = () => {
+        console.log(isRunning);
         if (!isRunning) {
             const newGrid = grid.slice();
             for (const row of newGrid) {
@@ -327,7 +325,7 @@ const Grid: FC = () => {
     const visualize = (algorithm: string) => {
         if (!isRunning) {
             clearGrid();
-            toggleIsRunning();
+            setIsRunning(true);
             const startCell = grid[startCellRow][startCellCol];
             const endCell = grid[endCellRow][endCellCol];
             let visitedCellsInOrder;
@@ -359,7 +357,7 @@ const Grid: FC = () => {
             if (i === visitedCellsInOrder.length) {
                 setTimeout(() => {
                     animateShortest(cellsInPathOrdered);
-                }, i * 5);
+                }, i * 8);
                 return;
             }
             setTimeout(() => {
@@ -374,7 +372,7 @@ const Grid: FC = () => {
                     document.getElementById(`cell-${cell.row}-${cell.col}`)!.className =
                         'cell cell-visited';
                 }
-            }, i * 5);
+            }, i * 8);
         }
     }
 
@@ -383,8 +381,8 @@ const Grid: FC = () => {
         for (let i = 0; i < cellsInShortestPathOrder.length; i++) {
             if (cellsInShortestPathOrder[i] === 'end') {
                 setTimeout(() => {
-                    toggleIsRunning();
-                }, i * 5);
+                    setIsRunning(false);
+                }, i * 25);
             } else {
                 setTimeout(() => {
                     const cell = cellsInShortestPathOrder[i];
@@ -398,7 +396,7 @@ const Grid: FC = () => {
                         document.getElementById(`cell-${cell.row}-${cell.col}`)!.className =
                             'cell cell-shortest-path';
                     }
-                }, i * 15);
+                }, i * 20);
             }
         }
     }
@@ -416,23 +414,13 @@ const Grid: FC = () => {
 
     return (
         <div>
-            <nav className="navbar navbar-expand-lg navbar-dark bg-dark ">
-                <a className="navbar-brand" href="/">
+            <nav>
+                <a href="/">
                     <b>Path Finding Vizualized</b>
                 </a>
-                <button
-                    className="navbar-toggler"
-                    type="button"
-                    data-toggle="collapse"
-                    data-target="#navbarNav"
-                    aria-controls="navbarNav"
-                    aria-expanded="false"
-                    aria-label="Toggle navigation">
-                    <span className="navbar-toggler-icon"></span>
-                </button>
-                <div className="collapse navbar-collapse" id="navbarNav">
-                    <ul className="navbar-nav">
-                        <li className="nav-item">
+                <div>
+                    <ul>
+                        <li>
                             <a
                                 className="nav-link"
                                 href="http://www.github.com/derekmarshall855/path-finding-visualized">
@@ -440,13 +428,13 @@ const Grid: FC = () => {
                                 Link to code{' '}
                             </a>
                         </li>
-                        <li className="nav-item">
-                            <a className="nav-link" href="https://github.com/derekmarshall855">
+                        <li>
+                            <a href="https://github.com/derekmarshall855">
                                 My Other Projects
                             </a>
                         </li>
-                        <li className="nav-item">
-                            <a className="nav-link" href="https://derekmarshall.net">
+                        <li>
+                            <a href="https://derekmarshall.net">
                                 Portfolio
                             </a>
                         </li>
@@ -486,38 +474,26 @@ const Grid: FC = () => {
                 </tbody>
             </table>
             <button
-                type="button"
-                className="btn btn-danger"
                 onClick={() => clearGrid()}>
                 Clear Grid
             </button>
             <button
-                type="button"
-                className="btn btn-warning"
                 onClick={() => clearWalls()}>
                 Clear Walls
             </button>
             <button
-                type="button"
-                className="btn btn-primary"
                 onClick={() => visualize('Dijkstra')}>
                 Dijkstra's
             </button>
             <button
-                type="button"
-                className="btn btn-primary"
                 onClick={() => visualize('AStar')}>
-                A*
+                AStar
             </button>
             <button
-                type="button"
-                className="btn btn-primary"
                 onClick={() => visualize('BFS')}>
                 Bread First Search
             </button>
             <button
-                type="button"
-                className="btn btn-primary"
                 onClick={() => visualize('DFS')}>
                 Depth First Search
             </button>
