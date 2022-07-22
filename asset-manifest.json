@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/path-finding-visualized/static/css/main.79393620.css",
+    "main.js": "/path-finding-visualized/static/js/main.fb475606.js",
+    "index.html": "/path-finding-visualized/index.html",
+    "main.79393620.css.map": "/path-finding-visualized/static/css/main.79393620.css.map",
+    "main.fb475606.js.map": "/path-finding-visualized/static/js/main.fb475606.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.79393620.css",
+    "static/js/main.fb475606.js"
+  ]
+}
